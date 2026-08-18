@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>District-wise Tourism Explorer | Bangladesh</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="brand" onclick="showHome()" style="cursor:pointer">
+        🇧🇩 Bangladesh Tourism
+        <span>District Explorer</span>
+      </div>
+      <div class="search-box">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <input type="search" id="globalSearch" placeholder="Search districts, waterfalls, beaches, temples..." autocomplete="off" />
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-ghost" onclick="showHome()">Districts</button>
+        <button class="btn btn-primary" onclick="showExplore()">Explore Places</button>
+        <button class="theme-toggle" id="themeToggle" title="Toggle dark mode" aria-label="Toggle dark mode">
+          <svg class="icon-moon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+          <svg class="icon-sun" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HOME VIEW -->
+    <div id="homeView" class="view active">
+      <section class="hero">
+        <h1>Discover Bangladesh, District by District</h1>
+        <p>Explore 64 districts across 8 divisions. From the world’s longest beach to the largest mangrove forest and misty hill tracts — start your journey here.</p>
+        <div class="hero-stats">
+          <div class="stat"><strong>64</strong><span>Districts</span></div>
+          <div class="stat"><strong>8</strong><span>Divisions</span></div>
+          <div class="stat"><strong>200+</strong><span>Attractions</span></div>
+          <div class="stat"><strong>∞</strong><span>Memories</span></div>
+        </div>
+      </section>
+
+      <div class="filters" id="categoryFilters">
+        <span style="font-weight:600;font-size:0.9rem;color:var(--muted)">Filter:</span>
+        <button class="filter-chip active" data-filter="all">All</button>
+        <button class="filter-chip" data-filter="Beach">Beach</button>
+        <button class="filter-chip" data-filter="Mountain">Mountain</button>
+        <button class="filter-chip" data-filter="Waterfall">Waterfall</button>
+        <button class="filter-chip" data-filter="Forest">Forest</button>
+        <button class="filter-chip" data-filter="Historical">Historical</button>
+        <button class="filter-chip" data-filter="Religious">Religious</button>
+        <button class="filter-chip" data-filter="Wildlife">Wildlife</button>
+        <button class="filter-chip" data-filter="Adventure">Adventure</button>
+        <button class="filter-chip" data-filter="Family">Family</button>
+        <button class="filter-chip" data-filter="Photography">Photography</button>
+      </div>
+
+      <div id="districtsContainer"></div>
+    </div>
+
+    <!-- EXPLORE / SEARCH RESULTS -->
+    <div id="exploreView" class="view">
+      <button class="btn btn-outline back-btn" onclick="showHome()">← Back to Districts</button>
+      <h2 class="section-title" id="exploreTitle">All Tourist Places</h2>
+      <div class="filters" id="exploreFilters"></div>
+      <div class="places-grid" id="placesGrid"></div>
+      <div class="empty" id="exploreEmpty" style="display:none">
+        <h3>No places found</h3>
+        <p>Try a different search or filter.</p>
+      </div>
+    </div>
+
+    <!-- DISTRICT DETAIL -->
+    <div id="districtView" class="view">
+      <button class="btn btn-outline back-btn" onclick="showHome()">← All Districts</button>
+      <div id="districtContent"></div>
+    </div>
+  </main>
+
+  <!-- Place Modal -->
+  <div class="modal-overlay" id="placeModal">
+    <div class="modal">
+      <button class="close" onclick="closeModal()">×</button>
+      <img id="modalImg" src="" alt="" />
+      <div class="content">
+        <span class="cat" id="modalCat"></span>
+        <h2 id="modalName"></h2>
+        <div class="meta-row">
+          <span id="modalRating"></span>
+          <span id="modalLoc"></span>
+          <span id="modalBest"></span>
+        </div>
+        <p id="modalDesc" style="margin-bottom:1rem;color:var(--muted)"></p>
+        <div id="modalExtra"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    District-wise Tourism Explorer for Bangladesh · Data curated for discovery · Not affiliated with any official tourism board
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
