@@ -22,7 +22,8 @@
       </div>
       <div class="nav-btns">
         <button class="btn btn-ghost" onclick="showHome()">Districts</button>
-        <button class="btn btn-primary" onclick="showExplore()">Explore Places</button>
+        <button class="btn btn-ghost" onclick="showExplore()">Explore Places</button>
+        <button class="btn btn-primary" onclick="showHotels()">🏨 Hotels</button>
         <button class="theme-toggle" id="themeToggle" title="Toggle dark mode" aria-label="Toggle dark mode">
           <svg class="icon-moon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
           <svg class="icon-sun" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
@@ -80,6 +81,132 @@
       <button class="btn btn-outline back-btn" onclick="showHome()">← All Districts</button>
       <div id="districtContent"></div>
     </div>
+
+    <!-- HOTELS SEARCH & RESULTS -->
+    <div id="hotelsView" class="view">
+      <div class="demo-banner">🧪 Demo data — no real hotel inventory or live pricing is connected. Bookings made here are simulated only.</div>
+      <section class="hotel-hero">
+        <h1>Find Your Perfect Stay in Bangladesh</h1>
+        <p>Search hotels and resorts across every district — from beach resorts to hill-town cottages.</p>
+      </section>
+
+      <form id="hotelSearchForm" class="hotel-search-panel">
+        <div class="hs-field">
+          <label for="hsDistrict">District</label>
+          <select id="hsDistrict"><option value="">All Districts</option></select>
+        </div>
+        <div class="hs-field">
+          <label for="hsDestination">Destination / Area</label>
+          <input type="text" id="hsDestination" placeholder="e.g. Kolatoli, Sajek..." autocomplete="off" />
+        </div>
+        <div class="hs-field">
+          <label for="hsCheckin">Check-in</label>
+          <input type="date" id="hsCheckin" />
+        </div>
+        <div class="hs-field">
+          <label for="hsCheckout">Check-out</label>
+          <input type="date" id="hsCheckout" />
+        </div>
+        <div class="hs-field">
+          <label for="hsGuests">Guests</label>
+          <input type="number" id="hsGuests" min="1" max="20" value="2" />
+        </div>
+        <div class="hs-field">
+          <label for="hsRooms">Rooms</label>
+          <input type="number" id="hsRooms" min="1" max="10" value="1" />
+        </div>
+        <div class="hs-field hs-budget">
+          <label for="hsBudget">Max Budget / night (৳)</label>
+          <input type="number" id="hsBudget" min="0" step="500" placeholder="Any" />
+        </div>
+        <button type="submit" class="btn btn-primary hs-submit">🔍 Search Hotels</button>
+      </form>
+
+      <div class="hotels-layout">
+        <aside class="hotel-filters-panel" id="hotelFiltersPanel">
+          <div class="hf-head">
+            <h3>Filters</h3>
+            <button type="button" class="hf-clear" onclick="clearHotelFilters()">Clear all</button>
+          </div>
+
+          <div class="hf-group">
+            <h4>Price Range (per night)</h4>
+            <div class="hf-price-row">
+              <input type="number" id="hfPriceMin" placeholder="Min ৳" min="0" />
+              <span>–</span>
+              <input type="number" id="hfPriceMax" placeholder="Max ৳" min="0" />
+            </div>
+          </div>
+
+          <div class="hf-group">
+            <h4>Guest Rating</h4>
+            <div class="hf-options" id="hfRating"></div>
+          </div>
+
+          <div class="hf-group">
+            <h4>Hotel Category</h4>
+            <div class="hf-options" id="hfCategory"></div>
+          </div>
+
+          <div class="hf-group">
+            <h4>Amenities</h4>
+            <div class="hf-options" id="hfAmenities"></div>
+          </div>
+
+          <div class="hf-group">
+            <h4>Distance from Attraction</h4>
+            <div class="hf-options" id="hfDistance"></div>
+          </div>
+
+          <button type="button" class="btn btn-outline hf-apply" onclick="applyHotelFilters()">Apply Filters</button>
+        </aside>
+
+        <div class="hotel-results">
+          <div class="hotel-results-head">
+            <h2 id="hotelResultsTitle">All Hotels</h2>
+            <div class="hotel-sort">
+              <label for="hotelSort">Sort by</label>
+              <select id="hotelSort">
+                <option value="recommended">Recommended</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="rating-desc">Guest Rating</option>
+                <option value="star-desc">Star Rating</option>
+              </select>
+            </div>
+          </div>
+          <div class="hotels-grid" id="hotelsGrid"></div>
+          <div class="empty" id="hotelsEmpty" style="display:none">
+            <h3>No hotels match your search</h3>
+            <p>Try adjusting your filters or budget.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOTEL DETAIL -->
+    <div id="hotelDetailView" class="view">
+      <button class="btn btn-outline back-btn" onclick="showHotels()">← Back to Hotels</button>
+      <div id="hotelDetailContent"></div>
+    </div>
+
+    <!-- BOOKING FLOW -->
+    <div id="bookingView" class="view">
+      <button class="btn btn-outline back-btn" id="bookingBackBtn">← Back to Hotel</button>
+      <div class="booking-wrap">
+        <div class="booking-steps">
+          <div class="b-step active" id="bStep1"><span class="b-num">1</span><span>Select Room</span></div>
+          <div class="b-step" id="bStep2"><span class="b-num">2</span><span>Guest Information</span></div>
+          <div class="b-step" id="bStep3"><span class="b-num">3</span><span>Confirm Booking</span></div>
+        </div>
+        <div id="bookingContent"></div>
+      </div>
+    </div>
+
+    <!-- BOOKING CONFIRMATION -->
+    <div id="confirmationView" class="view">
+      <div id="confirmationContent"></div>
+    </div>
   </main>
 
   <!-- Place Modal -->
@@ -101,8 +228,22 @@
     </div>
   </div>
 
+  <!-- Gallery Lightbox -->
+  <div class="modal-overlay" id="galleryModal">
+    <div class="modal gallery-modal">
+      <button class="close" onclick="closeGallery()">×</button>
+      <img id="galleryImg" src="" alt="" />
+      <div class="gallery-nav">
+        <button type="button" onclick="galleryStep(-1)">‹ Prev</button>
+        <span id="galleryCount"></span>
+        <button type="button" onclick="galleryStep(1)">Next ›</button>
+      </div>
+    </div>
+  </div>
+
   <footer>
     District-wise Tourism Explorer for Bangladesh · Data curated for discovery · Not affiliated with any official tourism board
+    <br /><span class="footer-note">Hotel booking module uses simulated demo data — no real availability, payments, or live hotel API is connected.</span>
   </footer>
 
   <script src="app.js"></script>
