@@ -1,46 +1,46 @@
 :root {
-      --primary: #0d7377;
-      --primary-dark: #095456;
-      --accent: #e8b86d;
+      --primary: #006a4e;
+      --primary-dark: #004d38;
+      --accent: #f42a41;
       --bg: #f7f9fc;
       --card: #ffffff;
       --text: #1a1a2e;
       --muted: #64748b;
       --border: #e2e8f0;
-      --shadow: 0 4px 24px rgba(13, 115, 119, 0.08);
+      --shadow: 0 4px 24px rgba(0, 106, 78, 0.1);
       --radius: 16px;
-      --header-bg: linear-gradient(135deg, #0d7377 0%, #14919b 50%, #0a5c5f 100%);
-      --hero-overlay: linear-gradient(135deg, rgba(13,115,119,0.92), rgba(20,145,155,0.88));
+      --header-bg: linear-gradient(135deg, #00593f 0%, #006a4e 50%, #004d38 100%);
+      --hero-overlay: linear-gradient(135deg, rgba(0,106,78,0.92), rgba(0,89,63,0.88));
       --chip-bg: #ffffff;
-      --chip-active-bg: #0d7377;
-      --division-header-bg: linear-gradient(90deg, #f0fdfa, #fff);
+      --chip-active-bg: #006a4e;
+      --division-header-bg: linear-gradient(90deg, #f0fdf6, #fff);
       --district-card-bg: #f7f9fc;
-      --cat-bg: #ecfdf5;
-      --nearby-bg: #ecfdf5;
-      --nearby-border: #a7f3d0;
+      --cat-bg: #eafaf1;
+      --nearby-bg: #eafaf1;
+      --nearby-border: #9de3bf;
       --input-bg: rgba(255,255,255,0.95);
       --modal-bg: #ffffff;
     }
 
     body.dark {
-      --primary: #2dd4bf;
-      --primary-dark: #5eead4;
-      --accent: #fbbf24;
+      --primary: #23c184;
+      --primary-dark: #4ade9a;
+      --accent: #ff4d5e;
       --bg: #0f1419;
       --card: #1a2332;
       --text: #e8eef4;
       --muted: #94a3b8;
       --border: #2d3a4f;
       --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
-      --header-bg: linear-gradient(135deg, #0a4a4d 0%, #0d5c60 50%, #083c3f 100%);
-      --hero-overlay: linear-gradient(135deg, rgba(10,74,77,0.94), rgba(13,92,96,0.9));
+      --header-bg: linear-gradient(135deg, #013a29 0%, #04543c 50%, #012e21 100%);
+      --hero-overlay: linear-gradient(135deg, rgba(1,58,41,0.94), rgba(4,84,60,0.9));
       --chip-bg: #1a2332;
-      --chip-active-bg: #2dd4bf;
+      --chip-active-bg: #23c184;
       --division-header-bg: linear-gradient(90deg, #14202b, #1a2332);
       --district-card-bg: #141c27;
-      --cat-bg: #134e4a;
-      --nearby-bg: #134e4a;
-      --nearby-border: #2dd4bf;
+      --cat-bg: #0e3d2b;
+      --nearby-bg: #0e3d2b;
+      --nearby-border: #23c184;
       --input-bg: rgba(26,35,50,0.95);
       --modal-bg: #1a2332;
     }
@@ -149,9 +149,9 @@
     .btn-ghost:hover { background: rgba(255,255,255,0.25); }
     .btn-primary {
       background: var(--accent);
-      color: #1a1a2e;
+      color: #ffffff;
     }
-    .btn-primary:hover { background: #f0c87a; transform: translateY(-1px); }
+    .btn-primary:hover { background: #ff6b78; transform: translateY(-1px); }
     .btn-outline {
       background: transparent;
       border: 2px solid var(--primary);
@@ -164,7 +164,7 @@
 
     /* Hero */
     .hero {
-      background: linear-gradient(135deg, rgba(13,115,119,0.92), rgba(20,145,155,0.88)),
+      background: linear-gradient(135deg, rgba(0,106,78,0.92), rgba(0,89,63,0.88)),
                   url('https://images.unsplash.com/photo-1548013146-72479768bada?w=1600&q=80') center/cover;
       border-radius: var(--radius);
       padding: 3rem 2rem;
@@ -224,7 +224,7 @@
     }
     .filter-chip:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(13, 115, 119, 0.15);
+      box-shadow: 0 4px 12px rgba(0, 106, 78, 0.18);
     }
     .filter-chip:hover, .filter-chip.active {
       background: var(--chip-active-bg);
@@ -233,7 +233,7 @@
     }
     .filter-chip.active {
       transform: translateY(-1px);
-      box-shadow: 0 4px 14px rgba(13, 115, 119, 0.25);
+      box-shadow: 0 4px 14px rgba(0, 106, 78, 0.28);
     }
     body:not(.dark) .filter-chip:hover,
     body:not(.dark) .filter-chip.active {
@@ -330,7 +330,7 @@
     .district-card:hover {
       border-color: var(--primary);
       background: var(--card);
-      box-shadow: 0 12px 28px rgba(13, 115, 119, 0.18);
+      box-shadow: 0 12px 28px rgba(0, 106, 78, 0.18);
       transform: translateY(-6px) scale(1.02);
     }
     .district-card:active {
@@ -338,7 +338,7 @@
     }
     .district-card .icon {
       width: 48px; height: 48px;
-      background: linear-gradient(135deg, #0d7377, #14b8a6);
+      background: linear-gradient(135deg, #006a4e, #00975f);
       border-radius: 12px;
       display: flex; align-items: center; justify-content: center;
       margin: 0 auto 0.6rem;
@@ -370,7 +370,7 @@
     }
     .place-card:hover {
       transform: translateY(-8px) scale(1.015);
-      box-shadow: 0 16px 40px rgba(13,115,119,0.2);
+      box-shadow: 0 16px 40px rgba(0,106,78,0.2);
     }
     .place-card:active {
       transform: translateY(-3px) scale(1);
@@ -429,7 +429,7 @@
       position: relative;
       height: 280px;
       margin-bottom: 1.5rem;
-      background: #0d7377;
+      background: #006a4e;
     }
     .district-hero img {
       width: 100%; height: 100%;
@@ -762,7 +762,7 @@
 
     /* Hotel hero */
     .hotel-hero {
-      background: linear-gradient(135deg, rgba(13,115,119,0.92), rgba(20,145,155,0.88)),
+      background: linear-gradient(135deg, rgba(0,106,78,0.92), rgba(0,89,63,0.88)),
                   url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1600&q=80') center/cover;
       border-radius: var(--radius);
       padding: 2.25rem 2rem;
