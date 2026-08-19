@@ -528,6 +528,933 @@
     }
 
     
+    // ========== HOTEL BOOKING SYSTEM ==========
+    // NOTE: All hotel, room, availability, pricing and review data below is
+    // REALISTIC DEMO DATA for prototyping purposes only. No live hotel
+    // inventory, pricing feed or booking API is connected. Replace HOTELS
+    // and the booking submit handler with real API calls to go live.
+
+    const HOTEL_CATEGORIES = ["Luxury", "Resort", "Business", "Boutique", "Budget", "Eco Lodge"];
+
+    const HOTELS = [
+      {
+        id: 101, name: "Sea Pearl Beach Resort & Spa", district: "Cox's Bazar", division: "Chattogram",
+        location: "Kolatoli Beach Road", address: "Kolatoli Beach Road, Cox's Bazar 4700",
+        category: "Resort", starRating: 5, userRating: 4.7, reviewCount: 1284,
+        pricePerNight: 12500, distanceFromAttraction: 0.3,
+        img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80",
+        gallery: [
+          "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1000&q=80",
+          "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=1000&q=80",
+          "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1000&q=80",
+          "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=1000&q=80"
+        ],
+        desc: "A beachfront resort with direct sea access, multiple pools and a full spa. Rooms feature private balconies overlooking the Bay of Bengal — ideal for couples and families visiting Cox's Bazar Beach.",
+        facilities: ["wifi","pool","restaurant","parking","ac","breakfast","familyFriendly","spa","gym"],
+        checkIn: "2:00 PM", checkOut: "12:00 PM",
+        rules: ["No smoking in rooms (designated balcony areas only)", "Pets are not allowed", "Valid photo ID required at check-in", "Quiet hours from 11:00 PM to 7:00 AM"],
+        cancellation: "Free cancellation up to 3 days before check-in. 50% charge within 3 days. No refund for no-shows.",
+        availability: "available",
+        rooms: [
+          { id: "r101a", name: "Deluxe Sea View", capacity: 2, beds: "1 King Bed", price: 12500, amenities: ["Sea view","Balcony","Free WiFi","AC"], available: true },
+          { id: "r101b", name: "Family Suite", capacity: 4, beds: "2 Queen Beds", price: 19800, amenities: ["Sea view","Living area","Free WiFi","AC","Breakfast included"], available: true },
+          { id: "r101c", name: "Executive Villa", capacity: 3, beds: "1 King + Sofa Bed", price: 26500, amenities: ["Private pool access","Sea view","Free WiFi","Breakfast included"], available: false }
+        ],
+        nearbyAttractions: [{ name: "Cox's Bazar Beach", dist: "0.3 km" }, { name: "Himchari National Park", dist: "8 km" }, { name: "Laboni Point", dist: "1.2 km" }],
+        reviews: [
+          { name: "Rafiul H.", rating: 5, date: "Jul 2026", comment: "Stunning sea view and very clean rooms. Breakfast spread was excellent." },
+          { name: "Nusrat A.", rating: 4, date: "Jun 2026", comment: "Great location right on the beach. Pool area gets crowded on weekends." },
+          { name: "Tanjil K.", rating: 5, date: "May 2026", comment: "Staff were extremely helpful, arranged a boat trip for us too." }
+        ]
+      },
+      {
+        id: 102, name: "Ocean Paradise Hotel", district: "Cox's Bazar", division: "Chattogram",
+        location: "Marine Drive Road", address: "Marine Drive Road, Kolatoli, Cox's Bazar",
+        category: "Business", starRating: 4, userRating: 4.3, reviewCount: 856,
+        pricePerNight: 7200, distanceFromAttraction: 0.6,
+        img: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800&q=80",
+        gallery: [
+          "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=1000&q=80",
+          "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=1000&q=80",
+          "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1000&q=80"
+        ],
+        desc: "A comfortable mid-range hotel a short walk from the beach, popular with families and business travelers alike.",
+        facilities: ["wifi","restaurant","parking","ac","breakfast","familyFriendly"],
+        checkIn: "1:00 PM", checkOut: "11:00 AM",
+        rules: ["No smoking in rooms", "Pets are not allowed", "Government-issued ID required at check-in"],
+        cancellation: "Free cancellation up to 24 hours before check-in.",
+        availability: "available",
+        rooms: [
+          { id: "r102a", name: "Standard Twin", capacity: 2, beds: "2 Twin Beds", price: 7200, amenities: ["Free WiFi","AC","Breakfast included"], available: true },
+          { id: "r102b", name: "Deluxe Double", capacity: 2, beds: "1 Queen Bed", price: 8900, amenities: ["City view","Free WiFi","AC","Breakfast included"], available: true }
+        ],
+        nearbyAttractions: [{ name: "Cox's Bazar Beach", dist: "0.6 km" }, { name: "Inani Beach", dist: "22 km" }],
+        reviews: [
+          { name: "Sadia R.", rating: 4, date: "Jun 2026", comment: "Good value for money, close to the beach." },
+          { name: "Imran C.", rating: 4, date: "Apr 2026", comment: "Rooms were clean, breakfast could be more varied." }
+        ]
+      },
+      {
+        id: 103, name: "Coral Reef Guest House", district: "Cox's Bazar", division: "Chattogram",
+        location: "Kolatoli", address: "Kolatoli Road, Cox's Bazar",
+        category: "Budget", starRating: 3, userRating: 4.0, reviewCount: 412,
+        pricePerNight: 2800, distanceFromAttraction: 0.8,
+        img: "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&q=80",
+        gallery: ["https://images.unsplash.com/photo-1590490360182-c33d57733427?w=1000&q=80", "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=1000&q=80"],
+        desc: "Simple, clean rooms for backpackers and budget travelers, minutes from the beach.",
+        facilities: ["wifi","ac","parking"],
+        checkIn: "2:00 PM", checkOut: "11:00 AM",
+        rules: ["No smoking indoors", "No outside guests after 10 PM"],
+        cancellation: "Non-refundable rate. No cancellations or changes.",
+        availability: "limited",
+        rooms: [
+          { id: "r103a", name: "Standard Room", capacity: 2, beds: "1 Double Bed", price: 2800, amenities: ["Free WiFi","AC"], available: true },
+          { id: "r103b", name: "Dorm-Style Room", capacity: 4, beds: "4 Single Beds", price: 4200, amenities: ["Free WiFi","Fan"], available: true }
+        ],
+        nearbyAttractions: [{ name: "Cox's Bazar Beach", dist: "0.8 km" }],
+        reviews: [{ name: "Mehedi S.", rating: 4, date: "Mar 2026", comment: "Very budget friendly and decent for the price." }]
+      },
+      {
+        id: 104, name: "Sajek Cloud Cottage", district: "Rangamati", division: "Chattogram",
+        location: "Sajek Valley", address: "Konglak Para, Sajek Valley, Rangamati",
+        category: "Eco Lodge", starRating: 3, userRating: 4.6, reviewCount: 623,
+        pricePerNight: 5500, distanceFromAttraction: 0.2,
+        img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+        gallery: ["https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1000&q=80", "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1000&q=80"],
+        desc: "Bamboo cottages perched on a ridge with panoramic sea-of-clouds sunrise views over Sajek Valley.",
+        facilities: ["wifi","restaurant","familyFriendly"],
+        checkIn: "1:00 PM", checkOut: "11:00 AM",
+        rules: ["Generator electricity — limited hours", "No smoking inside cottages", "Bring warm clothing for winter nights"],
+        cancellation: "Free cancellation up to 5 days before check-in due to remote location logistics.",
+        availability: "available",
+        rooms: [
+          { id: "r104a", name: "Cloud View Cottage", capacity: 2, beds: "1 Double Bed", price: 5500, amenities: ["Valley view","Balcony"], available: true },
+          { id: "r104b", name: "Family Cottage", capacity: 4, beds: "2 Double Beds", price: 8500, amenities: ["Valley view","Balcony","Sitting area"], available: true }
+        ],
+        nearbyAttractions: [{ name: "Sajek Valley Viewpoint", dist: "0.2 km" }, { name: "Konglak Hill", dist: "1.5 km" }],
+        reviews: [
+          { name: "Farhan T.", rating: 5, date: "Jan 2026", comment: "Waking up to a sea of clouds was unforgettable." },
+          { name: "Priyanka D.", rating: 4, date: "Dec 2025", comment: "Basic but the view makes up for everything." }
+        ]
+      },
+      {
+        id: 105, name: "Kaptai Lakeview Resort", district: "Rangamati", division: "Chattogram",
+        location: "Kaptai", address: "Kaptai Lake Road, Rangamati",
+        category: "Resort", starRating: 4, userRating: 4.4, reviewCount: 389,
+        pricePerNight: 6800, distanceFromAttraction: 0.1,
+        img: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800&q=80",
+        gallery: ["https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1000&q=80", "https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=1000&q=80"],
+        desc: "Lakeside resort with private jetty access for boat rides across Kaptai Lake and views of forested hills.",
+        facilities: ["wifi","restaurant","parking","ac","breakfast","familyFriendly"],
+        checkIn: "2:00 PM", checkOut: "12:00 PM",
+        rules: ["Life jackets mandatory for boat rides", "No smoking in rooms"],
+        cancellation: "Free cancellation up to 48 hours before check-in.",
+        availability: "available",
+        rooms: [
+          { id: "r105a", name: "Lake View Room", capacity: 2, beds: "1 Queen Bed", price: 6800, amenities: ["Lake view","Free WiFi","Breakfast included"], available: true },
+          { id: "r105b", name: "Hillside Suite", capacity: 3, beds: "1 King Bed", price: 9500, amenities: ["Lake view","Balcony","Free WiFi","Breakfast included"], available: true }
+        ],
+        nearbyAttractions: [{ name: "Kaptai Lake", dist: "0.1 km" }, { name: "Sajek Valley", dist: "58 km" }],
+        reviews: [{ name: "Shanto B.", rating: 4, date: "Feb 2026", comment: "Loved the boat ride included with the stay." }]
+      },
+      {
+        id: 106, name: "Nilgiri Hill Resort", district: "Bandarban", division: "Chattogram",
+        location: "Thanchi Road", address: "Nilgiri, Thanchi Road, Bandarban",
+        category: "Resort", starRating: 4, userRating: 4.5, reviewCount: 501,
+        pricePerNight: 7500, distanceFromAttraction: 0.1,
+        img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80",
+        gallery: ["https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1000&q=80", "https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=1000&q=80"],
+        desc: "Perched above the clouds at Nilgiri, offering some of the best sunrise views in the Chittagong Hill Tracts.",
+        facilities: ["wifi","restaurant","parking","familyFriendly"],
+        checkIn: "1:00 PM", checkOut: "11:00 AM",
+        rules: ["Special travel permit may be required for the region", "No smoking indoors"],
+        cancellation: "Free cancellation up to 5 days before check-in.",
+        availability: "limited",
+        rooms: [
+          { id: "r106a", name: "Mountain View Room", capacity: 2, beds: "1 Double Bed", price: 7500, amenities: ["Mountain view","Balcony"], available: true },
+          { id: "r106b", name: "Premium Cottage", capacity: 3, beds: "1 King + 1 Single", price: 11000, amenities: ["Mountain view","Balcony","Breakfast included"], available: false }
+        ],
+        nearbyAttractions: [{ name: "Nilgiri Viewpoint", dist: "0.1 km" }, { name: "Chimbuk Hill", dist: "14 km" }],
+        reviews: [{ name: "Ovi R.", rating: 5, date: "Nov 2025", comment: "Best sunrise I have ever seen, staff were very welcoming." }]
+      },
+      {
+        id: 107, name: "Boga Lake Tribal Homestay", district: "Bandarban", division: "Chattogram",
+        location: "Ruma", address: "Boga Lake, Ruma Upazila, Bandarban",
+        category: "Budget", starRating: 2, userRating: 4.1, reviewCount: 178,
+        pricePerNight: 1800, distanceFromAttraction: 0.05,
+        img: "https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&q=80",
+        gallery: ["https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=1000&q=80"],
+        desc: "Simple bamboo homestay run by a local Bawm family right beside Boga Lake, with home-cooked meals.",
+        facilities: ["breakfast"],
+        checkIn: "3:00 PM", checkOut: "10:00 AM",
+        rules: ["No electricity after 10 PM (solar only)", "Meals provided by hosts, notify dietary needs in advance"],
+        cancellation: "Non-refundable due to remote trekking logistics.",
+        availability: "available",
+        rooms: [{ id: "r107a", name: "Shared Homestay Room", capacity: 2, beds: "Floor mattresses", price: 1800, amenities: ["Home-cooked meals","Lake access"], available: true }],
+        nearbyAttractions: [{ name: "Boga Lake", dist: "0.05 km" }, { name: "Keokradong Peak", dist: "6 km" }],
+        reviews: [{ name: "Zarin M.", rating: 4, date: "Oct 2025", comment: "Authentic experience, the family took great care of us." }]
+      },
+      {
+        id: 108, name: "Grand Sundarban Riverside Hotel", district: "Khulna", division: "Khulna",
+        location: "Khulna City", address: "KDA Avenue, Khulna",
+        category: "Business", starRating: 4, userRating: 4.2, reviewCount: 640,
+        pricePerNight: 5900, distanceFromAttraction: 3.5,
+        img: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80",
+        gallery: ["https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1000&q=80", "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=1000&q=80"],
+        desc: "A modern city hotel in Khulna, the launch point for Sundarbans mangrove forest tours and river cruises.",
+        facilities: ["wifi","restaurant","parking","ac","breakfast","gym"],
+        checkIn: "2:00 PM", checkOut: "12:00 PM",
+        rules: ["No smoking in rooms", "ID required at check-in"],
+        cancellation: "Free cancellation up to 24 hours before check-in.",
+        availability: "available",
+        rooms: [
+          { id: "r108a", name: "Executive Room", capacity: 2, beds: "1 Queen Bed", price: 5900, amenities: ["City view","Free WiFi","Breakfast included"], available: true },
+          { id: "r108b", name: "Sundarbans Package Suite", capacity: 2, beds: "1 King Bed", price: 8200, amenities: ["Free WiFi","Breakfast included","Tour desk"], available: true }
+        ],
+        nearbyAttractions: [{ name: "Sundarbans Mangrove Forest", dist: "3.5 km (boat launch)" }, { name: "Sixty Dome Mosque", dist: "48 km" }],
+        reviews: [{ name: "Kabir H.", rating: 4, date: "Jan 2026", comment: "Helped us book a great Sundarbans tour from the front desk." }]
+      },
+      {
+        id: 109, name: "Grand Sylhet Hotel & Resort", district: "Sylhet", division: "Sylhet",
+        location: "Airport Road", address: "Airport Road, Sylhet",
+        category: "Luxury", starRating: 5, userRating: 4.6, reviewCount: 1102,
+        pricePerNight: 11000, distanceFromAttraction: 6.0,
+        img: "https://images.unsplash.com/photo-1564890367538-4652e70f1f2b?w=800&q=80",
+        gallery: [
+          "https://images.unsplash.com/photo-1564890367538-4652e70f1f2b?w=1000&q=80",
+          "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=1000&q=80",
+          "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=1000&q=80"
+        ],
+        desc: "A 5-star resort set among tea gardens near Sylhet city, with multiple restaurants, spa and a large pool.",
+        facilities: ["wifi","pool","restaurant","parking","ac","breakfast","familyFriendly","spa","gym"],
+        checkIn: "2:00 PM", checkOut: "12:00 PM",
+        rules: ["No smoking in rooms", "Formal dress code in fine-dining restaurant"],
+        cancellation: "Free cancellation up to 3 days before check-in.",
+        availability: "available",
+        rooms: [
+          { id: "r109a", name: "Garden View Room", capacity: 2, beds: "1 King Bed", price: 11000, amenities: ["Garden view","Free WiFi","Breakfast included"], available: true },
+          { id: "r109b", name: "Club Suite", capacity: 3, beds: "1 King + Sofa Bed", price: 17500, amenities: ["Lounge access","Free WiFi","Breakfast included"], available: true }
+        ],
+        nearbyAttractions: [{ name: "Jaflong", dist: "58 km" }, { name: "Ratargul Swamp Forest", dist: "35 km" }],
+        reviews: [
+          { name: "Adiba F.", rating: 5, date: "Jul 2026", comment: "Impeccable service, the tea garden setting is beautiful." },
+          { name: "Rakib J.", rating: 4, date: "May 2026", comment: "A bit far from the city center but worth it for the ambience." }
+        ]
+      },
+      {
+        id: 110, name: "Srimangal Tea Resort", district: "Moulvibazar", division: "Sylhet",
+        location: "Srimangal", address: "Bhanugach Road, Srimangal, Moulvibazar",
+        category: "Eco Lodge", starRating: 3, userRating: 4.5, reviewCount: 445,
+        pricePerNight: 4600, distanceFromAttraction: 1.0,
+        img: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80",
+        gallery: ["https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1000&q=80", "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1000&q=80"],
+        desc: "Cottages surrounded by rolling tea estates, walking distance from Lawachara National Park.",
+        facilities: ["wifi","restaurant","parking","breakfast","familyFriendly"],
+        checkIn: "1:00 PM", checkOut: "11:00 AM",
+        rules: ["Respect wildlife in nearby forest areas", "No smoking indoors"],
+        cancellation: "Free cancellation up to 48 hours before check-in.",
+        availability: "available",
+        rooms: [
+          { id: "r110a", name: "Tea Garden Cottage", capacity: 2, beds: "1 Double Bed", price: 4600, amenities: ["Garden view","Breakfast included"], available: true },
+          { id: "r110b", name: "Family Bungalow", capacity: 5, beds: "2 Double Beds", price: 7900, amenities: ["Garden view","Sitting area","Breakfast included"], available: true }
+        ],
+        nearbyAttractions: [{ name: "Srimangal Tea Gardens", dist: "1 km" }, { name: "Lawachara National Park", dist: "8 km" }],
+        reviews: [{ name: "Nafisa T.", rating: 5, date: "Mar 2026", comment: "Peaceful stay surrounded by tea gardens, loved the seven-color tea." }]
+      },
+      {
+        id: 111, name: "Pan Pacific Sonargaon Dhaka", district: "Dhaka", division: "Dhaka",
+        location: "Kawran Bazar", address: "107 Kazi Nazrul Islam Avenue, Dhaka 1215",
+        category: "Luxury", starRating: 5, userRating: 4.7, reviewCount: 2210,
+        pricePerNight: 15500, distanceFromAttraction: 5.5,
+        img: "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=800&q=80",
+        gallery: [
+          "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=1000&q=80",
+          "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1000&q=80",
+          "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1000&q=80"
+        ],
+        desc: "A landmark 5-star hotel in the heart of Dhaka with multiple dining options, a large pool and full business facilities.",
+        facilities: ["wifi","pool","restaurant","parking","ac","breakfast","spa","gym"],
+        checkIn: "3:00 PM", checkOut: "12:00 PM",
+        rules: ["No smoking in rooms", "Formal attire in fine-dining outlets"],
+        cancellation: "Free cancellation up to 24 hours before check-in.",
+        availability: "available",
+        rooms: [
+          { id: "r111a", name: "Deluxe City View", capacity: 2, beds: "1 King Bed", price: 15500, amenities: ["City view","Free WiFi","Breakfast included"], available: true },
+          { id: "r111b", name: "Executive Club Room", capacity: 2, beds: "1 King Bed", price: 21000, amenities: ["Lounge access","Free WiFi","Breakfast included"], available: true }
+        ],
+        nearbyAttractions: [{ name: "Lalbagh Fort", dist: "6 km" }, { name: "Ahsan Manzil", dist: "7 km" }],
+        reviews: [
+          { name: "Tahmid I.", rating: 5, date: "Aug 2026", comment: "Excellent service, great location for business trips." },
+          { name: "Farhana N.", rating: 4, date: "Jun 2026", comment: "Lovely breakfast buffet and very comfortable rooms." }
+        ]
+      },
+      {
+        id: 112, name: "Old Dhaka Heritage Inn", district: "Dhaka", division: "Dhaka",
+        location: "Old Dhaka", address: "Near Lalbagh Fort, Old Dhaka",
+        category: "Boutique", starRating: 3, userRating: 4.2, reviewCount: 298,
+        pricePerNight: 4200, distanceFromAttraction: 0.4,
+        img: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&q=80",
+        gallery: ["https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1000&q=80", "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=1000&q=80"],
+        desc: "A boutique inn with Mughal-inspired interiors, steps away from Lalbagh Fort and Old Dhaka's historic lanes.",
+        facilities: ["wifi","ac","breakfast"],
+        checkIn: "1:00 PM", checkOut: "11:00 AM",
+        rules: ["No smoking indoors", "Quiet hours after 10 PM"],
+        cancellation: "Free cancellation up to 24 hours before check-in.",
+        availability: "available",
+        rooms: [{ id: "r112a", name: "Heritage Room", capacity: 2, beds: "1 Queen Bed", price: 4200, amenities: ["Free WiFi","Breakfast included"], available: true }],
+        nearbyAttractions: [{ name: "Lalbagh Fort", dist: "0.4 km" }, { name: "Ahsan Manzil", dist: "1.8 km" }],
+        reviews: [{ name: "Rezwan A.", rating: 4, date: "Feb 2026", comment: "Charming place, felt like stepping into history." }]
+      },
+      {
+        id: 113, name: "Kuakata Sunrise-Sunset Resort", district: "Patuakhali", division: "Barishal",
+        location: "Kuakata Beach", address: "Kuakata Beach Road, Patuakhali",
+        category: "Resort", starRating: 4, userRating: 4.4, reviewCount: 356,
+        pricePerNight: 6200, distanceFromAttraction: 0.2,
+        img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80",
+        gallery: ["https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1000&q=80", "https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=1000&q=80"],
+        desc: "Beachfront resort at Kuakata, famous as the only place in Bangladesh to see both sunrise and sunset over the sea.",
+        facilities: ["wifi","restaurant","parking","ac","breakfast","familyFriendly"],
+        checkIn: "2:00 PM", checkOut: "11:00 AM",
+        rules: ["No smoking in rooms", "Beach bonfires require prior approval"],
+        cancellation: "Free cancellation up to 48 hours before check-in.",
+        availability: "available",
+        rooms: [
+          { id: "r113a", name: "Sea View Room", capacity: 2, beds: "1 Queen Bed", price: 6200, amenities: ["Sea view","Free WiFi","Breakfast included"], available: true },
+          { id: "r113b", name: "Family Suite", capacity: 4, beds: "2 Queen Beds", price: 9800, amenities: ["Sea view","Free WiFi","Breakfast included"], available: true }
+        ],
+        nearbyAttractions: [{ name: "Kuakata Beach", dist: "0.2 km" }],
+        reviews: [{ name: "Sabbir Y.", rating: 5, date: "Dec 2025", comment: "Caught both sunrise and sunset from our balcony, unforgettable." }]
+      },
+      {
+        id: 114, name: "Chattogram Skyline Hotel", district: "Chattogram", division: "Chattogram",
+        location: "GEC Circle", address: "GEC Circle, Chattogram",
+        category: "Business", starRating: 4, userRating: 4.3, reviewCount: 712,
+        pricePerNight: 6900, distanceFromAttraction: 4.2,
+        img: "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=800&q=80",
+        gallery: ["https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=1000&q=80", "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1000&q=80"],
+        desc: "A well-located business hotel in Chattogram city, a convenient base for trips to Foy's Lake and Sitakunda.",
+        facilities: ["wifi","restaurant","parking","ac","breakfast","gym"],
+        checkIn: "2:00 PM", checkOut: "12:00 PM",
+        rules: ["No smoking in rooms", "ID required at check-in"],
+        cancellation: "Free cancellation up to 24 hours before check-in.",
+        availability: "available",
+        rooms: [{ id: "r114a", name: "Superior Room", capacity: 2, beds: "1 King Bed", price: 6900, amenities: ["City view","Free WiFi","Breakfast included"], available: true }],
+        nearbyAttractions: [{ name: "Foy's Lake", dist: "4.2 km" }, { name: "Sitakunda Eco Park", dist: "38 km" }],
+        reviews: [{ name: "Mahin O.", rating: 4, date: "Apr 2026", comment: "Great central location and helpful staff." }]
+      },
+      {
+        id: 115, name: "Bogura Heritage Lodge", district: "Bogura", division: "Rajshahi",
+        location: "Bogura Sadar", address: "Near Mahasthangarh Road, Bogura",
+        category: "Budget", starRating: 3, userRating: 4.0, reviewCount: 165,
+        pricePerNight: 2600, distanceFromAttraction: 5.0,
+        img: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&q=80",
+        gallery: ["https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1000&q=80"],
+        desc: "A simple, clean lodge convenient for exploring the ancient ruins of Mahasthangarh.",
+        facilities: ["wifi","ac","parking","breakfast"],
+        checkIn: "1:00 PM", checkOut: "11:00 AM",
+        rules: ["No smoking indoors"],
+        cancellation: "Free cancellation up to 24 hours before check-in.",
+        availability: "available",
+        rooms: [{ id: "r115a", name: "Standard Room", capacity: 2, beds: "1 Double Bed", price: 2600, amenities: ["Free WiFi","Breakfast included"], available: true }],
+        nearbyAttractions: [{ name: "Mahasthangarh", dist: "5 km" }],
+        reviews: [{ name: "Jubayer H.", rating: 4, date: "Jan 2026", comment: "Good base for visiting Mahasthangarh ruins." }]
+      },
+      {
+        id: 116, name: "Chimbuk Cloud Resort", district: "Bandarban", division: "Chattogram",
+        location: "Chimbuk Hill", address: "Chimbuk Road, Bandarban Sadar",
+        category: "Eco Lodge", starRating: 3, userRating: 4.3, reviewCount: 233,
+        pricePerNight: 4900, distanceFromAttraction: 0.3,
+        img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+        gallery: ["https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1000&q=80", "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1000&q=80"],
+        desc: "Hillside cottages near Chimbuk viewpoint, with sweeping views over the winding hill roads.",
+        facilities: ["wifi","restaurant","familyFriendly"],
+        checkIn: "1:00 PM", checkOut: "11:00 AM",
+        rules: ["No smoking indoors", "Roads can be foggy — drive carefully at night"],
+        cancellation: "Free cancellation up to 3 days before check-in.",
+        availability: "sold-out",
+        rooms: [{ id: "r116a", name: "Hillview Cottage", capacity: 2, beds: "1 Double Bed", price: 4900, amenities: ["Mountain view","Balcony"], available: false }],
+        nearbyAttractions: [{ name: "Chimbuk Hill", dist: "0.3 km" }, { name: "Nilgiri", dist: "12 km" }],
+        reviews: [{ name: "Labonno P.", rating: 4, date: "Sep 2025", comment: "Gorgeous views, book well ahead as it fills up fast." }]
+      }
+    ];
+
+    // ========== HOTEL STATE ==========
+    let hotelFilteredList = [...HOTELS];
+    let hotelSort = "recommended";
+    let activeHotelFilters = { priceMin: null, priceMax: null, ratings: [], categories: [], amenities: [], distance: null, budgetCap: null, district: "", destination: "" };
+
+    const AMENITY_META = {
+      wifi: { label: "Free Wi-Fi", icon: "📶" },
+      parking: { label: "Parking", icon: "🅿️" },
+      pool: { label: "Swimming Pool", icon: "🏊" },
+      restaurant: { label: "Restaurant", icon: "🍽️" },
+      ac: { label: "Air Conditioning", icon: "❄️" },
+      breakfast: { label: "Breakfast Included", icon: "🍳" },
+      familyFriendly: { label: "Family Friendly", icon: "👨‍👩‍👧" },
+      spa: { label: "Spa", icon: "💆" },
+      gym: { label: "Gym", icon: "🏋️" }
+    };
+
+    function starString(n) {
+      return "★".repeat(Math.round(n)) + "☆".repeat(5 - Math.round(n));
+    }
+
+    function money(n) {
+      return "৳" + Number(n).toLocaleString("en-US");
+    }
+
+    function availabilityBadge(status) {
+      if (status === "sold-out") return `<span class="avail-badge sold-out">Sold Out</span>`;
+      if (status === "limited") return `<span class="avail-badge limited">Limited Rooms</span>`;
+      return `<span class="avail-badge">Available</span>`;
+    }
+
+    // ========== INIT HOTEL SEARCH UI ==========
+    function initHotelUI() {
+      // District dropdown
+      const districtSelect = document.getElementById("hsDistrict");
+      const allDistricts = Object.values(DIVISIONS).flat().sort();
+      districtSelect.innerHTML = `<option value="">All Districts</option>` +
+        allDistricts.map(d => `<option value="${d}">${d}</option>`).join("");
+
+      // Rating filter options
+      document.getElementById("hfRating").innerHTML = [5,4,3].map(r => `
+        <label class="hf-option">
+          <input type="checkbox" value="${r}" data-group="ratings" />
+          <span class="stars">${starString(r)}</span> &amp; up
+        </label>`).join("");
+
+      // Category filter options
+      document.getElementById("hfCategory").innerHTML = HOTEL_CATEGORIES.map(c => `
+        <label class="hf-option">
+          <input type="checkbox" value="${c}" data-group="categories" /> ${c}
+        </label>`).join("");
+
+      // Amenity filter options
+      document.getElementById("hfAmenities").innerHTML = Object.entries(AMENITY_META).map(([key, m]) => `
+        <label class="hf-option">
+          <input type="checkbox" value="${key}" data-group="amenities" /> ${m.icon} ${m.label}
+        </label>`).join("");
+
+      // Distance filter options
+      document.getElementById("hfDistance").innerHTML = [
+        { v: 1, l: "Within 1 km" }, { v: 5, l: "Within 5 km" }, { v: 15, l: "Within 15 km" }
+      ].map(d => `
+        <label class="hf-option">
+          <input type="radio" name="hfDistanceRadio" value="${d.v}" /> ${d.l}
+        </label>`).join("");
+
+      document.getElementById("hotelSearchForm").addEventListener("submit", e => {
+        e.preventDefault();
+        runHotelSearch();
+      });
+
+      document.getElementById("hotelSort").addEventListener("change", e => {
+        hotelSort = e.target.value;
+        renderHotelsGrid();
+      });
+
+      // Set sensible default dates (today / tomorrow)
+      const today = new Date();
+      const tomorrow = new Date(today.getTime() + 86400000);
+      document.getElementById("hsCheckin").value = today.toISOString().slice(0, 10);
+      document.getElementById("hsCheckout").value = tomorrow.toISOString().slice(0, 10);
+      document.getElementById("hsCheckin").min = today.toISOString().slice(0, 10);
+    }
+
+    function showHotels() {
+      document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+      document.getElementById("hotelsView").classList.add("active");
+      runHotelSearch();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function runHotelSearch() {
+      activeHotelFilters.district = document.getElementById("hsDistrict").value;
+      activeHotelFilters.destination = document.getElementById("hsDestination").value.trim().toLowerCase();
+      const budget = document.getElementById("hsBudget").value;
+      activeHotelFilters.budgetCap = budget ? Number(budget) : null;
+      computeHotelResults();
+    }
+
+    function clearHotelFilters() {
+      document.getElementById("hfPriceMin").value = "";
+      document.getElementById("hfPriceMax").value = "";
+      document.querySelectorAll('#hfRating input, #hfCategory input, #hfAmenities input').forEach(el => el.checked = false);
+      document.querySelectorAll('#hfDistance input').forEach(el => el.checked = false);
+      activeHotelFilters.priceMin = null;
+      activeHotelFilters.priceMax = null;
+      activeHotelFilters.ratings = [];
+      activeHotelFilters.categories = [];
+      activeHotelFilters.amenities = [];
+      activeHotelFilters.distance = null;
+      computeHotelResults();
+    }
+
+    function applyHotelFilters() {
+      const priceMin = document.getElementById("hfPriceMin").value;
+      const priceMax = document.getElementById("hfPriceMax").value;
+      activeHotelFilters.priceMin = priceMin ? Number(priceMin) : null;
+      activeHotelFilters.priceMax = priceMax ? Number(priceMax) : null;
+      activeHotelFilters.ratings = [...document.querySelectorAll('#hfRating input:checked')].map(el => Number(el.value));
+      activeHotelFilters.categories = [...document.querySelectorAll('#hfCategory input:checked')].map(el => el.value);
+      activeHotelFilters.amenities = [...document.querySelectorAll('#hfAmenities input:checked')].map(el => el.value);
+      const distEl = document.querySelector('#hfDistance input:checked');
+      activeHotelFilters.distance = distEl ? Number(distEl.value) : null;
+      computeHotelResults();
+    }
+
+    function computeHotelResults() {
+      const f = activeHotelFilters;
+      let list = HOTELS.filter(h => {
+        if (f.district && h.district !== f.district) return false;
+        if (f.destination && !(h.location.toLowerCase().includes(f.destination) || h.name.toLowerCase().includes(f.destination) || h.district.toLowerCase().includes(f.destination))) return false;
+        if (f.budgetCap && h.pricePerNight > f.budgetCap) return false;
+        if (f.priceMin && h.pricePerNight < f.priceMin) return false;
+        if (f.priceMax && h.pricePerNight > f.priceMax) return false;
+        if (f.ratings.length && !f.ratings.some(r => h.userRating >= r)) return false;
+        if (f.categories.length && !f.categories.includes(h.category)) return false;
+        if (f.amenities.length && !f.amenities.every(a => h.facilities.includes(a))) return false;
+        if (f.distance && h.distanceFromAttraction > f.distance) return false;
+        return true;
+      });
+      hotelFilteredList = list;
+      const titleParts = [];
+      if (f.district) titleParts.push(f.district);
+      document.getElementById("hotelResultsTitle").textContent = titleParts.length ? `Hotels in ${titleParts.join(", ")}` : "All Hotels";
+      renderHotelsGrid();
+    }
+
+    function sortHotels(list) {
+      const arr = [...list];
+      switch (hotelSort) {
+        case "price-asc": return arr.sort((a, b) => a.pricePerNight - b.pricePerNight);
+        case "price-desc": return arr.sort((a, b) => b.pricePerNight - a.pricePerNight);
+        case "rating-desc": return arr.sort((a, b) => b.userRating - a.userRating);
+        case "star-desc": return arr.sort((a, b) => b.starRating - a.starRating);
+        default: return arr.sort((a, b) => (b.userRating * b.starRating) - (a.userRating * a.starRating));
+      }
+    }
+
+    function renderHotelsGrid() {
+      const grid = document.getElementById("hotelsGrid");
+      const empty = document.getElementById("hotelsEmpty");
+      const list = sortHotels(hotelFilteredList);
+      if (list.length === 0) {
+        grid.innerHTML = "";
+        empty.style.display = "block";
+        return;
+      }
+      empty.style.display = "none";
+      grid.innerHTML = list.map((h, i) => hotelCardHTML(h, i)).join("");
+    }
+
+    function hotelCardHTML(h, i) {
+      const facIcons = h.facilities.slice(0, 4).map(f => `<span>${AMENITY_META[f] ? AMENITY_META[f].icon + " " + AMENITY_META[f].label : f}</span>`).join("");
+      return `
+        <div class="hotel-card" style="--i:${i}">
+          <div class="img-wrap">
+            <img src="${h.img}" alt="${h.name}" loading="lazy" />
+            ${availabilityBadge(h.availability)}
+            <span class="star-badge">${"★".repeat(h.starRating)}</span>
+          </div>
+          <div class="body">
+            <span class="cat-tag">${h.category}</span>
+            <h3>${h.name}</h3>
+            <div class="loc-line">📍 ${h.location}, ${h.district}</div>
+            <div class="rating-line">
+              <span class="user-rating">${h.userRating.toFixed(1)}</span>
+              <span class="review-count">${h.reviewCount.toLocaleString()} reviews</span>
+            </div>
+            <div class="room-type-line">${h.rooms[0].name} · ${h.rooms.length} room type${h.rooms.length > 1 ? "s" : ""}</div>
+            <div class="facility-icons">${facIcons}</div>
+            <div class="price-row">
+              <div class="price-block">
+                <strong>${money(h.pricePerNight)}</strong>
+                <span class="per-night">per night</span>
+              </div>
+            </div>
+            <div class="card-btns">
+              <button class="btn btn-outline" onclick="openHotelDetail(${h.id})">View Details</button>
+              <button class="btn btn-primary" onclick="startBooking(${h.id})" ${h.availability === "sold-out" ? "disabled" : ""}>Book Now</button>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    // ========== HOTEL DETAIL ==========
+    let currentGalleryHotel = null;
+    let currentGalleryIndex = 0;
+
+    function openHotelDetail(id) {
+      const h = HOTELS.find(x => x.id === id);
+      if (!h) return;
+      document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+      document.getElementById("hotelDetailView").classList.add("active");
+
+      const mapQuery = encodeURIComponent(`${h.location}, ${h.district}, Bangladesh`);
+
+      document.getElementById("hotelDetailContent").innerHTML = `
+        <div class="hotel-detail-hero">
+          <img src="${h.img}" alt="${h.name}" />
+          <div class="overlay">
+            <span class="div-tag">${h.category} · ${"★".repeat(h.starRating)}</span>
+            <h1>${h.name}</h1>
+            <div class="hd-meta">
+              <span>📍 ${h.location}, ${h.district}</span>
+              <span>⭐ ${h.userRating.toFixed(1)} (${h.reviewCount.toLocaleString()} reviews)</span>
+              ${availabilityBadge(h.availability)}
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-strip">
+          ${h.gallery.map((g, i) => `<img src="${g}" alt="Gallery image ${i+1}" onclick="openGallery(${h.id}, ${i})" />`).join("")}
+        </div>
+
+        <div class="hd-layout">
+          <div class="hd-main">
+            <div class="hd-section">
+              <h3>About This Hotel</h3>
+              <p>${h.desc}</p>
+            </div>
+
+            <div class="hd-section">
+              <h3>Facilities</h3>
+              <div class="amenity-grid">
+                ${h.facilities.map(f => `<div class="amenity-item">${AMENITY_META[f] ? AMENITY_META[f].icon : "✓"} ${AMENITY_META[f] ? AMENITY_META[f].label : f}</div>`).join("")}
+              </div>
+            </div>
+
+            <div class="hd-section">
+              <h3>Location & Map</h3>
+              <p style="margin-bottom:0.75rem">${h.address}</p>
+              <div class="map-embed">
+                <iframe loading="lazy" src="https://www.google.com/maps?q=${mapQuery}&output=embed"></iframe>
+              </div>
+            </div>
+
+            <div class="hd-section">
+              <h3>Room Types</h3>
+              ${h.rooms.map(r => `
+                <div class="room-type-card ${r.available ? "" : "unavailable"}">
+                  <div class="rt-info">
+                    <h4>${r.name}</h4>
+                    <p>👥 Up to ${r.capacity} guests · 🛏️ ${r.beds}</p>
+                    <div class="rt-amenities">${r.amenities.map(a => `<span>${a}</span>`).join("")}</div>
+                  </div>
+                  <div class="rt-price">
+                    <strong>${money(r.price)}</strong>
+                    <span class="per-night">per night</span>
+                    <div style="margin-top:0.5rem">
+                      <button class="btn btn-primary" style="padding:0.5rem 1rem;font-size:0.8rem" onclick="startBooking(${h.id}, '${r.id}')" ${r.available ? "" : "disabled"}>${r.available ? "Book Now" : "Unavailable"}</button>
+                    </div>
+                  </div>
+                </div>`).join("")}
+            </div>
+
+            <div class="hd-section">
+              <h3>Hotel Rules</h3>
+              <ul class="rules-list">${h.rules.map(r => `<li>${r}</li>`).join("")}</ul>
+              <p style="margin-top:0.9rem"><strong style="color:var(--text)">Check-in:</strong> ${h.checkIn} &nbsp;·&nbsp; <strong style="color:var(--text)">Check-out:</strong> ${h.checkOut}</p>
+            </div>
+
+            <div class="hd-section">
+              <h3>Nearby Tourist Attractions</h3>
+              ${h.nearbyAttractions.map(a => `<div class="nearby-attr-item"><span>📍 ${a.name}</span><span class="dist">${a.dist}</span></div>`).join("")}
+            </div>
+
+            <div class="hd-section">
+              <h3>Guest Reviews (${h.reviewCount.toLocaleString()})</h3>
+              ${h.reviews.map(r => `
+                <div class="review-item">
+                  <div class="rv-head">
+                    <span class="rv-name">${r.name}</span>
+                    <span class="rv-date">${r.date}</span>
+                  </div>
+                  <div class="stars">${starString(r.rating)}</div>
+                  <p>${r.comment}</p>
+                </div>`).join("")}
+            </div>
+          </div>
+
+          <div class="hd-sidebar">
+            <div class="booking-box">
+              <div class="bb-price">${money(h.pricePerNight)} <span>/ night</span></div>
+              <div class="loc-line">Starting price · ${h.rooms.filter(r=>r.available).length} room type${h.rooms.filter(r=>r.available).length !== 1 ? "s" : ""} available</div>
+              <button class="btn btn-primary bb-cta" onclick="startBooking(${h.id})" ${h.availability === "sold-out" ? "disabled" : ""}>Book Now</button>
+              <p class="bb-note">You won't be charged yet — this is a demo booking flow.</p>
+            </div>
+            <div class="policy-box">
+              <h4>🛡️ Cancellation Policy</h4>
+              <p>${h.cancellation}</p>
+            </div>
+          </div>
+        </div>
+      `;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function openGallery(hotelId, index) {
+      currentGalleryHotel = HOTELS.find(h => h.id === hotelId);
+      currentGalleryIndex = index;
+      renderGallery();
+      document.getElementById("galleryModal").classList.add("open");
+    }
+
+    function renderGallery() {
+      if (!currentGalleryHotel) return;
+      const g = currentGalleryHotel.gallery;
+      document.getElementById("galleryImg").src = g[currentGalleryIndex];
+      document.getElementById("galleryCount").textContent = `${currentGalleryIndex + 1} / ${g.length}`;
+    }
+
+    function galleryStep(dir) {
+      if (!currentGalleryHotel) return;
+      const len = currentGalleryHotel.gallery.length;
+      currentGalleryIndex = (currentGalleryIndex + dir + len) % len;
+      renderGallery();
+    }
+
+    function closeGallery() {
+      document.getElementById("galleryModal").classList.remove("open");
+    }
+
+    // ========== BOOKING FLOW ==========
+    let booking = {
+      hotel: null, room: null, checkIn: "", checkOut: "", guests: 2, rooms: 1,
+      guestInfo: { fullName: "", email: "", phone: "", guestCount: 2, requests: "" },
+      step: 1
+    };
+
+    function startBooking(hotelId, preselectRoomId) {
+      const h = HOTELS.find(x => x.id === hotelId);
+      if (!h) return;
+      booking = {
+        hotel: h,
+        room: preselectRoomId ? h.rooms.find(r => r.id === preselectRoomId) : null,
+        checkIn: document.getElementById("hsCheckin") ? document.getElementById("hsCheckin").value : "",
+        checkOut: document.getElementById("hsCheckout") ? document.getElementById("hsCheckout").value : "",
+        guests: Number(document.getElementById("hsGuests") ? document.getElementById("hsGuests").value : 2) || 2,
+        rooms: Number(document.getElementById("hsRooms") ? document.getElementById("hsRooms").value : 1) || 1,
+        guestInfo: { fullName: "", email: "", phone: "", guestCount: 2, requests: "" },
+        step: 1
+      };
+      document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+      document.getElementById("bookingView").classList.add("active");
+      document.getElementById("bookingBackBtn").onclick = () => openHotelDetail(h.id);
+      renderBookingStep();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function nightsBetween(a, b) {
+      const d1 = new Date(a), d2 = new Date(b);
+      const diff = Math.round((d2 - d1) / 86400000);
+      return diff > 0 ? diff : 1;
+    }
+
+    function updateStepIndicator() {
+      [1, 2, 3].forEach(n => {
+        const el = document.getElementById("bStep" + n);
+        el.classList.remove("active", "done");
+        if (n < booking.step) el.classList.add("done");
+        if (n === booking.step) el.classList.add("active");
+      });
+    }
+
+    function renderBookingStep() {
+      updateStepIndicator();
+      const content = document.getElementById("bookingContent");
+      const h = booking.hotel;
+      if (booking.step === 1) {
+        content.innerHTML = `
+          <div class="booking-panel">
+            <h2>Select a Room — ${h.name}</h2>
+            <div class="form-grid" style="margin-bottom:1.25rem">
+              <div class="form-field"><label>Check-in</label><input type="date" id="bkCheckin" value="${booking.checkIn}" /></div>
+              <div class="form-field"><label>Check-out</label><input type="date" id="bkCheckout" value="${booking.checkOut}" /></div>
+              <div class="form-field"><label>Guests</label><input type="number" id="bkGuests" min="1" value="${booking.guests}" /></div>
+              <div class="form-field"><label>Rooms</label><input type="number" id="bkRooms" min="1" value="${booking.rooms}" /></div>
+            </div>
+            ${h.rooms.map(r => `
+              <div class="room-select-card ${booking.room && booking.room.id === r.id ? "selected" : ""} ${r.available ? "" : "unavailable"}" onclick="${r.available ? `selectRoom('${r.id}')` : ""}">
+                <div class="rt-info">
+                  <h4>${r.name}</h4>
+                  <p>👥 Up to ${r.capacity} guests · 🛏️ ${r.beds}${r.available ? "" : " · Sold out"}</p>
+                  <div class="rt-amenities">${r.amenities.map(a => `<span>${a}</span>`).join("")}</div>
+                </div>
+                <div class="rt-price"><strong>${money(r.price)}</strong><span class="per-night">per night</span></div>
+              </div>`).join("")}
+            <div class="booking-actions">
+              <span></span>
+              <button class="btn btn-primary" onclick="goToStep2()">Continue →</button>
+            </div>
+          </div>`;
+      } else if (booking.step === 2) {
+        const g = booking.guestInfo;
+        content.innerHTML = `
+          <div class="booking-panel">
+            <h2>Guest Information</h2>
+            <div class="form-grid">
+              <div class="form-field" id="fFullName">
+                <label>Full Name *</label>
+                <input type="text" id="gFullName" value="${g.fullName}" placeholder="e.g. Tanvin Ahmed" />
+                <span class="field-error">Please enter your full name.</span>
+              </div>
+              <div class="form-field" id="fEmail">
+                <label>Email *</label>
+                <input type="email" id="gEmail" value="${g.email}" placeholder="you@example.com" />
+                <span class="field-error">Please enter a valid email address.</span>
+              </div>
+              <div class="form-field" id="fPhone">
+                <label>Phone Number *</label>
+                <input type="tel" id="gPhone" value="${g.phone}" placeholder="01XXXXXXXXX" />
+                <span class="field-error">Please enter a valid phone number.</span>
+              </div>
+              <div class="form-field" id="fGuestCount">
+                <label>Number of Guests *</label>
+                <input type="number" id="gGuestCount" min="1" value="${g.guestCount || booking.guests}" />
+                <span class="field-error">Please enter at least 1 guest.</span>
+              </div>
+              <div class="form-field full">
+                <label>Special Requests (optional)</label>
+                <textarea id="gRequests" rows="3" placeholder="e.g. Early check-in, extra bed, dietary needs...">${g.requests}</textarea>
+              </div>
+            </div>
+            <div class="booking-actions">
+              <button class="btn btn-outline" onclick="goToStep1()">← Back</button>
+              <button class="btn btn-primary" onclick="goToStep3()">Continue →</button>
+            </div>
+          </div>`;
+      } else if (booking.step === 3) {
+        const nights = nightsBetween(booking.checkIn, booking.checkOut);
+        const roomTotal = booking.room.price * nights * booking.rooms;
+        const taxes = Math.round(roomTotal * 0.075);
+        const total = roomTotal + taxes;
+        content.innerHTML = `
+          <div class="booking-panel">
+            <h2>Confirm Your Booking</h2>
+            <div class="summary-card">
+              <div class="summary-row"><span class="label">Hotel</span><span>${h.name}</span></div>
+              <div class="summary-row"><span class="label">Room Type</span><span>${booking.room.name}</span></div>
+              <div class="summary-row"><span class="label">Check-in</span><span>${booking.checkIn}</span></div>
+              <div class="summary-row"><span class="label">Check-out</span><span>${booking.checkOut}</span></div>
+              <div class="summary-row"><span class="label">Nights</span><span>${nights}</span></div>
+              <div class="summary-row"><span class="label">Rooms</span><span>${booking.rooms}</span></div>
+              <div class="summary-row"><span class="label">Guest</span><span>${booking.guestInfo.fullName}</span></div>
+              <div class="summary-row"><span class="label">Email</span><span>${booking.guestInfo.email}</span></div>
+              <div class="summary-row"><span class="label">Phone</span><span>${booking.guestInfo.phone}</span></div>
+              ${booking.guestInfo.requests ? `<div class="summary-row"><span class="label">Special Requests</span><span>${booking.guestInfo.requests}</span></div>` : ""}
+              <div class="summary-row"><span class="label">Room Total</span><span>${money(roomTotal)}</span></div>
+              <div class="summary-row"><span class="label">Taxes & Fees (7.5%)</span><span>${money(taxes)}</span></div>
+              <div class="summary-row total"><span class="label">Total Amount</span><span>${money(total)}</span></div>
+            </div>
+            <p style="font-size:0.8rem;color:var(--muted);margin-bottom:1rem">By confirming, you agree to this hotel's cancellation policy: ${h.cancellation}</p>
+            <div class="booking-actions">
+              <button class="btn btn-outline" onclick="goToStep2()">← Back</button>
+              <button class="btn btn-primary" onclick="confirmBooking()">✓ Confirm Booking</button>
+            </div>
+          </div>`;
+      }
+    }
+
+    function selectRoom(roomId) {
+      booking.room = booking.hotel.rooms.find(r => r.id === roomId);
+      renderBookingStep();
+    }
+
+    function goToStep1() {
+      booking.step = 1;
+      renderBookingStep();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function goToStep2() {
+      booking.checkIn = document.getElementById("bkCheckin").value || booking.checkIn;
+      booking.checkOut = document.getElementById("bkCheckout").value || booking.checkOut;
+      booking.guests = Number(document.getElementById("bkGuests").value) || booking.guests;
+      booking.rooms = Number(document.getElementById("bkRooms").value) || booking.rooms;
+      if (!booking.room) {
+        alert("Please select a room type to continue.");
+        return;
+      }
+      booking.step = 2;
+      renderBookingStep();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function goToStep3() {
+      const fullName = document.getElementById("gFullName").value.trim();
+      const email = document.getElementById("gEmail").value.trim();
+      const phone = document.getElementById("gPhone").value.trim();
+      const guestCount = document.getElementById("gGuestCount").value;
+      const requests = document.getElementById("gRequests").value.trim();
+
+      let valid = true;
+      const setError = (fieldId, hasError) => {
+        document.getElementById(fieldId).classList.toggle("has-error", hasError);
+        if (hasError) valid = false;
+      };
+      setError("fFullName", fullName.length < 2);
+      setError("fEmail", !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
+      setError("fPhone", !/^[0-9+\-\s]{7,15}$/.test(phone));
+      setError("fGuestCount", !guestCount || Number(guestCount) < 1);
+
+      if (!valid) return;
+
+      booking.guestInfo = { fullName, email, phone, guestCount: Number(guestCount), requests };
+      booking.step = 3;
+      renderBookingStep();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function generateBookingId() {
+      const rand = Math.random().toString(36).slice(2, 8).toUpperCase();
+      return `BDT-${new Date().getFullYear()}-${rand}`;
+    }
+
+    function confirmBooking() {
+      const nights = nightsBetween(booking.checkIn, booking.checkOut);
+      const roomTotal = booking.room.price * nights * booking.rooms;
+      const taxes = Math.round(roomTotal * 0.075);
+      const total = roomTotal + taxes;
+      const bookingId = generateBookingId();
+      const h = booking.hotel;
+
+      document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+      document.getElementById("confirmationView").classList.add("active");
+      document.getElementById("confirmationContent").innerHTML = `
+        <div class="confirmation-wrap">
+          <div class="confirm-icon">✅</div>
+          <h1 class="confirm-title">Booking Confirmed!</h1>
+          <p class="confirm-sub">This is a simulated demo booking — no payment was processed and no real hotel inventory was reserved.</p>
+          <div class="confirm-card">
+            <div class="confirm-id-row">
+              <span class="cid">${bookingId}</span>
+              <span class="confirm-status">Confirmed</span>
+            </div>
+            <div class="summary-row"><span class="label">Hotel</span><span>${h.name}</span></div>
+            <div class="summary-row"><span class="label">Location</span><span>${h.location}, ${h.district}</span></div>
+            <div class="summary-row"><span class="label">Room Type</span><span>${booking.room.name}</span></div>
+            <div class="summary-row"><span class="label">Check-in</span><span>${booking.checkIn}</span></div>
+            <div class="summary-row"><span class="label">Check-out</span><span>${booking.checkOut}</span></div>
+            <div class="summary-row"><span class="label">Nights</span><span>${nights}</span></div>
+            <div class="summary-row"><span class="label">Rooms</span><span>${booking.rooms}</span></div>
+            <div class="summary-row"><span class="label">Guest Name</span><span>${booking.guestInfo.fullName}</span></div>
+            <div class="summary-row"><span class="label">Email</span><span>${booking.guestInfo.email}</span></div>
+            <div class="summary-row"><span class="label">Phone</span><span>${booking.guestInfo.phone}</span></div>
+            <div class="summary-row"><span class="label">Number of Guests</span><span>${booking.guestInfo.guestCount}</span></div>
+            ${booking.guestInfo.requests ? `<div class="summary-row"><span class="label">Special Requests</span><span>${booking.guestInfo.requests}</span></div>` : ""}
+            <div class="summary-row total"><span class="label">Total Amount</span><span>${money(total)}</span></div>
+          </div>
+          <div class="confirm-actions">
+            <button class="btn btn-outline" onclick="window.print()">🖨️ Print / Save</button>
+            <button class="btn btn-primary" onclick="showHotels()">Browse More Hotels</button>
+          </div>
+        </div>`;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
     // ========== DARK MODE ==========
     function initTheme() {
       const saved = localStorage.getItem("bd-tourism-theme");
@@ -577,7 +1504,12 @@
       if (e.target === document.getElementById("placeModal")) closeModal();
     });
 
+    document.getElementById("galleryModal").addEventListener("click", e => {
+      if (e.target === document.getElementById("galleryModal")) closeGallery();
+    });
+
     // Init
     initTheme();
     document.getElementById("themeToggle").addEventListener("click", toggleTheme);
     renderDistricts();
+    initHotelUI();
